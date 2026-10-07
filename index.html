@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>豆包创作广场 · 电脑端访问门户</title>
+<meta name="description" content="在电脑浏览器一键访问豆包创作广场（AI 创作 / 智能体 / 写作），无需下载 App。简洁、干净的导航门户。">
+<meta property="og:title" content="豆包创作广场 · 电脑端访问门户">
+<meta property="og:description" content="电脑浏览器一键打开豆包创作广场，内嵌预览 + 新标签页双保险。">
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --card: #ffffff;
+    --ink: #1f2330;
+    --muted: #6b7280;
+    --brand: #2b5cff;
+    --brand-2: #7c3aed;
+    --border: #e6e8ef;
+    --ok: #16a34a;
+    --warn: #d97706;
+    --shadow: 0 10px 30px rgba(30, 40, 90, .08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+    background: radial-gradient(1200px 600px at 80% -10%, #eaf0ff 0%, rgba(234,240,255,0) 60%),
+                radial-gradient(1000px 500px at -10% 10%, #f3eaff 0%, rgba(243,234,255,0) 55%),
+                var(--bg);
+    color: var(--ink);
+    min-height: 100dvh;
+    line-height: 1.6;
+  }
+  a { color: var(--brand); text-decoration: none; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 18px 60px; }
+
+  header.hero {
+    text-align: center;
+    padding: 30px 16px 26px;
+  }
+  .logo {
+    width: 64px; height: 64px; margin: 0 auto 14px;
+    border-radius: 18px;
+    display: grid; place-items: center;
+    font-size: 34px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    box-shadow: var(--shadow);
+  }
+  h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: .5px; }
+  .sub { color: var(--muted); font-size: 15px; margin: 0; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-top: 18px;
+  }
+
+  .seg {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .seg button {
+    flex: 1 1 auto;
+    min-width: 120px;
+    border: 1px solid var(--border);
+    background: #fbfcff;
+    color: var(--ink);
+    padding: 11px 14px;
+    border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    transition: .15s;
+  }
+  .seg button:hover { border-color: var(--brand); }
+  .seg button.active {
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    color: #fff; border-color: transparent;
+    box-shadow: 0 6px 16px rgba(43,92,255,.25);
+  }
+
+  .launch {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    background: linear-gradient(135deg, #eef3ff, #f6efff);
+    border: 1px solid #e3e9ff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .launch .txt { flex: 1 1 220px; }
+  .launch .txt b { display: block; font-size: 15px; }
+  .launch .txt span { color: var(--muted); font-size: 13px; }
+  .btn {
+    border: none; cursor: pointer;
+    font-size: 15px; font-weight: 700;
+    padding: 12px 20px; border-radius: 12px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    box-shadow: 0 8px 20px rgba(43,92,255,.28);
+    transition: .15s; white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+  .btn.ghost {
+    background: #fff; color: var(--brand);
+    border: 1px solid var(--brand); box-shadow: none;
+  }
+
+  .frame-head {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    background: #fafbff;
+  }
+  .frame-head .url {
+    flex: 1 1 200px; font-size: 12.5px; color: var(--muted);
+    background: #fff; border: 1px solid var(--border);
+    padding: 6px 10px; border-radius: 8px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .mini {
+    border: 1px solid var(--border); background: #fff;
+    color: var(--ink); font-size: 13px; font-weight: 600;
+    padding: 7px 12px; border-radius: 8px; cursor: pointer;
+  }
+  .mini:hover { border-color: var(--brand); color: var(--brand); }
+
+  .frame-wrap {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 0 0 12px 12px;
+    background: #fff;
+    overflow: hidden;
+  }
+  iframe {
+    width: 100%;
+    height: 70vh;
+    min-height: 520px;
+    border: 0; display: block;
+    background: #fff;
+  }
+  .status {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; text-align: center; padding: 24px;
+    background: #fff;
+  }
+  .spinner {
+    width: 38px; height: 38px; border-radius: 50%;
+    border: 4px solid #e3e9ff; border-top-color: var(--brand);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .status p { margin: 0; color: var(--muted); font-size: 14px; }
+  .status.hidden { display: none; }
+  .status .warn-box {
+    max-width: 520px;
+    border: 1px solid #fde68a; background: #fffbeb;
+    color: #92400e; border-radius: 12px; padding: 16px;
+    text-align: left;
+  }
+
+  .tips { margin-top: 18px; }
+  .tips h2 { font-size: 17px; margin: 0 0 10px; }
+  .tips ol { margin: 0; padding-left: 20px; color: #374151; }
+  .tips li { margin: 8px 0; }
+  .tips code {
+    background: #eef2ff; color: #3730a3;
+    padding: 1px 6px; border-radius: 6px; font-size: 13px;
+  }
+
+  .note {
+    margin-top: 18px; font-size: 12.5px; color: var(--muted);
+    text-align: center;
+  }
+  footer {
+    margin-top: 22px; text-align: center; color: var(--muted); font-size: 12.5px;
+  }
+  footer a { color: var(--brand); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="logo">🎨</div>
+    <h1>豆包创作广场 · 电脑端访问门户</h1>
+    <p class="sub">在电脑浏览器一键打开豆包创作 / 智能体 / 写作，无需下载 App。</p>
+  </header>
+
+  <div class="card">
+    <div class="seg" id="seg">
+      <button class="active" data-url="https://www.doubao.com/chat/create-image" data-name="豆包创作广场">🎨 豆包创作广场</button>
+      <button data-url="https://www.doubao.com/" data-name="豆包官网首页">🏠 豆包官网</button>
+      <button data-url="https://www.doubao.com/chat/write" data-name="豆包 AI 写作">✍️ AI 写作</button>
+    </div>
+
+    <div class="launch">
+      <div class="txt">
+        <b id="launchTitle">打开：豆包创作广场</b>
+        <span>推荐方式 · 在新标签页打开，登录与创作体验最完整</span>
+      </div>
+      <button class="btn" id="openBtn">🚀 打开（新标签页）</button>
+    </div>
+
+    <div class="frame-head">
+      <span class="url" id="frameUrl">https://www.doubao.com/chat/create-image</span>
+      <button class="mini" id="refreshBtn">↻ 刷新</button>
+      <button class="mini" id="openFrameBtn">↗ 新标签打开</button>
+    </div>
+    <div class="frame-wrap">
+      <div class="status" id="status">
+        <div class="spinner"></div>
+        <p>正在加载豆包页面…</p>
+      </div>
+      <iframe id="frame" src="https://www.doubao.com/chat/create-image" title="豆包创作广场预览" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+  <div class="card tips">
+    <h2>💡 电脑端使用建议</h2>
+    <ol>
+      <li><b>优先用「新标签页打开」按钮</b>：豆包是单页应用，部分功能（登录验证码、扫码、上传）在内嵌框里可能受限，新标签体验最稳。</li>
+      <li><b>登录方式</b>：支持手机号 + 验证码，或抖音 App 扫码。首次使用建议先登录再创作。</li>
+      <li><b>内嵌空白怎么办</b>：如果下方预览区一直转圈或空白，说明豆包临时限制了内嵌显示——直接点上面的「🚀 打开（新标签页）」即可。</li>
+      <li><b>找不到入口</b>：电脑浏览器建议用 Chrome / Edge，并开启硬件加速（设置 → 系统 → 使用硬件加速）。</li>
+    </ol>
+  </div>
+
+  <p class="note">
+    本页面为第三方导航门户，仅聚合豆包官方公开网页入口，与字节跳动 / 豆包官方无隶属关系。
+    所有创作功能均由豆包官方提供。
+  </p>
+
+  <footer>
+    Made with ❤️ · 部署于 <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var iframe   = document.getElementById('frame');
+    var statusEl = document.getElementById('status');
+    var frameUrl = document.getElementById('frameUrl');
+    var launchTitle = document.getElementById('launchTitle');
+    var openBtn  = document.getElementById('openBtn');
+    var openFrameBtn = document.getElementById('openFrameBtn');
+    var refreshBtn = document.getElementById('refreshBtn');
+    var seg = document.getElementById('seg');
+
+    var current = 'https://www.doubao.com/chat/create-image';
+    var watchdog = null;
+
+    function showStatusLoading() {
+      statusEl.classList.remove('hidden');
+      statusEl.innerHTML = '<div class="spinner"></div><p>正在加载豆包页面…</p>';
+    }
+    function hideStatus() { statusEl.classList.add('hidden'); }
+    function showBlocked() {
+      statusEl.classList.remove('hidden');
+      statusEl.innerHTML =
+        '<div class="warn-box">' +
+        '<b>⚠️ 内嵌预览被拦截或空白</b><br><br>' +
+        '豆包页面可能临时限制了在网站内直接显示。请点击上方' +
+        ' <b>「🚀 打开（新标签页）」</b> 按钮，在独立标签页中正常使用全部功能。' +
+        '</div>';
+    }
+
+    function load(url) {
+      current = url;
+      frameUrl.textContent = url;
+      showStatusLoading();
+      iframe.src = url;
+      // 看门狗：8 秒未触发 onload 则提示用新标签
+      clearTimeout(watchdog);
+      watchdog = setTimeout(function () {
+        // onload 未触发，说明可能被拦截或加载过慢
+        showBlocked();
+      }, 8000);
+    }
+
+    iframe.addEventListener('load', function () {
+      clearTimeout(watchdog);
+      // 跨域无法读取内容，onload 触发即认为已加载（即使被 JS 清空也至少不再转圈）
+      hideStatus();
+    });
+    iframe.addEventListener('error', function () {
+      clearTimeout(watchdog);
+      showBlocked();
+    });
+
+    function openNewTab() { window.open(current, '_blank', 'noopener'); }
+
+    openBtn.addEventListener('click', openNewTab);
+    openFrameBtn.addEventListener('click', openNewTab);
+    refreshBtn.addEventListener('click', function () { load(current); });
+
+    seg.addEventListener('click', function (e) {
+      var btn = e.target.closest('button');
+      if (!btn) return;
+      [].forEach.call(seg.children, function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      launchTitle.textContent = '打开：' + btn.getAttribute('data-name');
+      load(btn.getAttribute('data-url'));
+    });
+
+    // 默认加载第一个目标
+    load(current);
+  })();
+</script>
+</body>
+</html>
